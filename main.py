@@ -65,6 +65,9 @@ def temperatura(Pin):
 
 pulsador_MCP9700=Pin(34,Pin.IN)
 pulsador_MCP9700.irq(trigger=Pin.IR-Q_RISING,handler=temperatura)
+#funcion emergencia
+rising=flancos de subida (0 a 1)
+falling=flancos de bajada (1 a 0)
 
 GPIO_SET=const(0x3FF44004)
 
