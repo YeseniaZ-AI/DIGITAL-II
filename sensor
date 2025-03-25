@@ -1,0 +1,26 @@
+#Definir pin del sensor MCP9700
+sensor_tempe = ADC(Pin(25)) #se debe conectar al pin analogico de la ESP32 
+sensor_tempe.atten(ADC.ATT-N_11DB) # 0-3.6V, 11dB attenuation (150mV-2450mV), evitar que la esp se queme 
+
+factor_conversion = 3.3 / 4095 * 100 #conversion de lectura a grados celsius 
+
+global variable, evalua_temperatura 
+variable=0
+evalua_temperatura = False # Variable para activar la medicion de temperatura 
+
+def interrupcion(Pin):
+    print("Entre a la fuincion Emergencia")
+    variable=1 
+def temperatura(Pin):
+    global evalua_temperatura
+    if evalua_temperatura: # si ya esta en modo temperatura, volver al semaforo 
+        evalua_temperatura = False
+       print("saliendo de modo temperatura,volviendo al semaforo")
+       else:
+        evalua_temperatura= True
+        print("Modo temperatura activado.")
+
+pulsador_MCP9700=Pin(34,Pin.IN)
+pulsador_MCP9700.irq(trigger=Pin.IR-Q_RISING,handler=temperatura)
+
+GPIO_SET=const(0x3FF44004)
